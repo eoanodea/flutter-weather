@@ -1,9 +1,10 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/services/location.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_weather/services/networking.dart';
+
+const apiKey = "937438c5aa7c587fe8632f387109d432";
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -13,32 +14,26 @@ class LoadingScreen extends StatefulWidget {
 bool hasLocation = false;
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  double latitude;
+  double longitude;
+
   @override
   void initState() {
     super.initState();
-    getLocation();
-    getData();
+    getLocationData();
   }
 
-  void getLocation() async {
+  void getLocationData() async {
     Location location = Location();
     await location.getCurrentLocation();
-    print(location.latitude);
-  }
 
-  void getData() async {
-    http.Response response = await http.get(
-        'https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=439d4b804bc8187953eb36d2a8c26a02');
-    if (response.statusCode == 200) {
-      String data = response.body;
-      var decodedData = jsonDecode(data);
+    latitude = location.latitude;
+    longitude = location.longitude;
 
-      double temperature = decodedData['main']['temp'];
-      int condition = decodedData['weather'][0]['id'];
-      String cityName = decodedData['name'];
-    } else {
-      print(response.statusCode);
-    }
+    NetworkHelper networkHelper = NetworkHelper(
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
+
+    var weatherData = await networkHelper;
   }
 
   List<Color> colours = [
