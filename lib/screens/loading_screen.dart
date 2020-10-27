@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -30,6 +31,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
         'https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=439d4b804bc8187953eb36d2a8c26a02');
     if (response.statusCode == 200) {
       String data = response.body;
+      var decodedData = jsonDecode(data);
+
+      double temperature = decodedData['main']['temp'];
+      int condition = decodedData['weather'][0]['id'];
+      String cityName = decodedData['name'];
     } else {
       print(response.statusCode);
     }
@@ -41,8 +47,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
     Colors.green,
     Colors.pink,
     Colors.teal,
-    Colors.black,
-    Colors.orange
+    Colors.orange,
+    Colors.lime,
+    Colors.cyan,
+    Colors.yellow
   ];
 
   Color randomColour() {
@@ -51,6 +59,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   Color selectedColour = Colors.red;
+  int taps = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +68,23 @@ class _LoadingScreenState extends State<LoadingScreen> {
         onTap: () {
           setState(() {
             selectedColour = randomColour();
+            taps++;
           });
         },
         child: Container(
+          width: double.infinity,
+          height: double.infinity,
           color: selectedColour,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                taps.toString(),
+                style: TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold),
+              ),
+              Text('taps'),
+            ],
+          ),
         ),
       ),
     );
