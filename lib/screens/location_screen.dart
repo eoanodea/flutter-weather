@@ -50,7 +50,7 @@ class _LocationScreenState extends State<LocationScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('Weather App'),
+        title: Text(cityName),
         leading: FlatButton(
           onPressed: () async {
             var weatherData = await weather.getLocationWeather();
@@ -62,8 +62,8 @@ class _LocationScreenState extends State<LocationScreen> {
         ),
         actions: [
           FlatButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              var typedName = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
@@ -71,6 +71,11 @@ class _LocationScreenState extends State<LocationScreen> {
                   },
                 ),
               );
+              if (typedName != null) {
+                cityName = typedName;
+                var weatherData = await weather.getCityWeather(cityName);
+                updateUI(weatherData);
+              }
             },
             child: Icon(
               Icons.location_city,
