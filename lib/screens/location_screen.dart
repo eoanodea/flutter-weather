@@ -25,6 +25,13 @@ class _LocationScreenState extends State<LocationScreen> {
 
   void updateUI(dynamic weatherData) {
     setState(() {
+      if (weatherData == null) {
+        temperature = 0;
+        weatherIcon = 'Error';
+        message = 'Unable to get weather data';
+        cityName = '';
+        return;
+      }
       double temp = weatherData['main']['temp'];
 
       temperature = temp.toInt();
@@ -40,6 +47,27 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text('Weather App'),
+        leading: FlatButton(
+          onPressed: () async {
+            var weatherData = await weather.getLocationWeather();
+            updateUI(weatherData);
+          },
+          child: Icon(
+            Icons.near_me,
+          ),
+        ),
+        actions: [
+          FlatButton(
+            onPressed: () {},
+            child: Icon(
+              Icons.location_city,
+            ),
+          ),
+        ],
+      ),
       body: Container(
         constraints: BoxConstraints.expand(),
         child: SafeArea(
@@ -48,38 +76,16 @@ class _LocationScreenState extends State<LocationScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  FlatButton(
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.near_me,
-                      size: 50.0,
-                    ),
+                  Text(
+                    '$temperature°',
+                    style: kTempTextStyle,
                   ),
-                  FlatButton(
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.location_city,
-                      size: 50.0,
-                    ),
+                  Text(
+                    weatherIcon,
+                    style: kConditionTextStyle,
                   ),
                 ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 15.0),
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      '$temperature°',
-                      style: kTempTextStyle,
-                    ),
-                    Text(
-                      weatherIcon,
-                      style: kConditionTextStyle,
-                    ),
-                  ],
-                ),
               ),
               Text(
                 '$message in $cityName',
