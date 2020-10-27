@@ -84,13 +84,15 @@ class _LocationScreenState extends State<LocationScreen> {
         ],
       ),
       body: Container(
+        padding: EdgeInsets.all(20.0),
         constraints: BoxConstraints.expand(),
         child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
                     '$temperature°',
@@ -113,7 +115,3 @@ class _LocationScreenState extends State<LocationScreen> {
     );
   }
 }
-
-// double temperature = decodedData['main']['temp'];
-// int condition = decodedData['weather'][0]['id'];
-// String cityName = decodedData['name'];

@@ -46,7 +46,7 @@ class _CityScreenState extends State<CityScreen> {
             ),
             SizedBox(height: 50.0),
             FlatButton(
-              color: ThemeData().accentColor,
+              color: Colors.teal,
               onPressed: () {
                 Navigator.pop(context, cityName);
               },
