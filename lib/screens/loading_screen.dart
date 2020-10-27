@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_weather/screens/location_screen.dart';
 import 'package:flutter_weather/services/location.dart';
 import 'package:flutter_weather/services/networking.dart';
 
@@ -34,6 +36,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
         'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
 
     var weatherData = await networkHelper;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return LocationScreen();
+        },
+      ),
+    );
   }
 
   List<Color> colours = [
@@ -70,14 +81,25 @@ class _LoadingScreenState extends State<LoadingScreen> {
           width: double.infinity,
           height: double.infinity,
           color: selectedColour,
-          child: Row(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                taps.toString(),
-                style: TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold),
+              SpinKitDoubleBounce(color: Colors.white, size: 100.0),
+              Text('Loading data...'),
+              SizedBox(
+                height: 50.0,
               ),
-              Text('taps'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    taps.toString(),
+                    style:
+                        TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold),
+                  ),
+                  Text('taps'),
+                ],
+              ),
             ],
           ),
         ),
