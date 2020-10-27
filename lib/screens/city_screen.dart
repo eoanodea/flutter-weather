@@ -10,6 +10,27 @@ class _CityScreenState extends State<CityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text('Weather App'),
+        actions: [
+          FlatButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return CityScreen();
+                  },
+                ),
+              );
+            },
+            child: Icon(
+              Icons.location_city,
+            ),
+          ),
+        ],
+      ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -33,7 +54,10 @@ class _CityScreenState extends State<CityScreen> {
               ),
               Container(
                 padding: EdgeInsets.all(20.0),
-                child: null,
+                child: TextField(
+                  decoration: kTextFieldInputDecoration,
+                  onChanged: (value) {},
+                ),
               ),
               FlatButton(
                 onPressed: () {},
